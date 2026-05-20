@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {Router} from "@angular/router";
 import { UserPopupComponent } from '../user-popup/user-popup.component';
+import { UserService } from 'src/app/core/services/user.service';
+import { Usuario } from 'src/app/core/models/user.model';
 
 @Component({
   selector: 'app-user-list',
@@ -15,12 +17,20 @@ export class UserListComponent implements OnInit {
   @Output() cerrarPopUpCancel = new EventEmitter<void>();
 
   modoPopup: String = 'CLOSED';
+  estadoPopup: String = 'CREAR';
+  usuarios: Usuario[] = [];
+  selectedUserId: number = 0;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private userService: UserService) {
 
+    this.userService = userService;
   }
 
-  ngOnInit(): void {
+   async ngOnInit() {
+
+      this.usuarios = await this.userService.obtenerUsuarios();
+      console.log("Usuarios feched: ",this.usuarios);
+      this.selectedUserId = this.usuarios[0]?.id || 0;
   }
 
   onCerrarPopUpOk() {
@@ -33,6 +43,18 @@ export class UserListComponent implements OnInit {
   
   launchPopup() {
     
+    this.modoPopup = 'LAUNCH';
+  }
+
+  launchPopupCrear() {
+    
+    this.estadoPopup = 'CREAR';
+    this.modoPopup = 'LAUNCH';
+  }
+
+  launchPopupActualizar() {
+    
+    this.estadoPopup = 'ACTUALIZAR';
     this.modoPopup = 'LAUNCH';
   }
 

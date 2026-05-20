@@ -1,5 +1,5 @@
 
-<app-user-popup *ngIf="modoPopup !== 'CLOSED'"
+<app-user-popup *ngIf="modoPopup !== 'CLOSED'" [estadoPopup] = "estadoPopup" [userId] = "selectedUserId"
                 (cerrarPopUpOk)="onCerrarPopUpOk()"
                 (cerrarPopUpCancel)="onCerrarPopUpCancel()"
 />
@@ -7,8 +7,50 @@
 <div class="user-list-container">
     <h2>User List</h2>
     <!-- @TODO: Implement user list display here -->
-    <div>
+    <!-- <div>
         <button (click)="launchPopup()">Popup</button>
+    </div> -->
+
+    <div class = "container-button">
+
+        <button class = "button main-button" (click)="launchPopupCrear()">Crear</button>
+        <button class = "button main-button" (click)="launchPopupActualizar()">Editar</button>
+        <button class = "button main-button-icon" (click)="launchPopup()"><img src = "assets/images/DeleteIcon.JPG" alt = "Borrar" class = "img-icon"></button>
+
+    </div>
+    <div clas = "table-container-overflow">
+        <table class = "user-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>SELECT</th>
+                    <th>Genero</th>
+                    <th>Nombre</th>
+                    <th>Nick usuario</th>
+                    <th>Nombre compelto</th>
+                    <th>Fecha de creación</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let usuario of usuarios; let i = index">
+
+                    <!-- NO ME ESTÁ COGIENDO POR DEFECTO EL PRIMERO NO SE POR QUÉ!!!!!!-->
+                    <td><input type = "radio" name = "selectedUser" [value] = "usuario.id" [(ngModel)] = "selectedUserId" ></td>
+                    <!-- ME GUSTARÍA ASÍ PERO NO FUFA
+                    <td><img src="'assets/images/'+usuario.genero?.nombre+'.JPG'" alt = "{{ usuario.genero?.nombre }}"></td> -->
+                    <td *ngIf="usuario.genero?.id === 1"><img src="assets/images/Male.JPG" alt = "{{ usuario.genero?.nombre }}" class = "img-gender"></td>
+                    <td *ngIf="usuario.genero?.id === 2"><img src="assets/images/Female.JPG" alt = "{{ usuario.genero?.nombre }}" class="img-gender"></td>
+                    <td>{{ usuario.nombre}}</td>
+                    <td>{{ usuario.nickUsuario }}</td>
+                    <td>{{ usuario.primerApellido}} {{ usuario.segundoApellido}} , {{ usuario.nombre}}</td>
+                    <td>{{ usuario.fechaHoraCreacion | date: 'yyyy-MM-dd HH:mm' }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>

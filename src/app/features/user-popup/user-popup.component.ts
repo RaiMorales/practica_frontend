@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output} from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 @Component({
@@ -12,6 +12,10 @@ export class UserPopupComponent implements OnInit {
 
     @Output() cerrarPopUpOk = new EventEmitter<void>();
     @Output() cerrarPopUpCancel = new EventEmitter<void>();
+
+   @Input() estadoPopup: String = 'CREAR';
+   @Input() userId: number = 0;
+
     constructor() {
 
     }
@@ -20,6 +24,13 @@ export class UserPopupComponent implements OnInit {
     }
 
     async onSave() {
+        if (this.estadoPopup === 'CREAR') {
+
+            console.log("Creando nuevo usuario...");
+        } else if (this.estadoPopup === 'ACTUALIZAR'){
+
+            console.log("Actualizando el usuario con id: ",this.userId)
+        }
         this.cerrarPopUpOk.emit();
     }
     onCancel() {

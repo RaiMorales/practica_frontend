@@ -62,7 +62,7 @@ tr:nth-child(even) {background-color: #f7cecc;}
 
 .container-button {
   display: flex; /* alinear horizontalmente */
-  gap: 10px;
+  gap: 15px;
   margin-bottom: .8rem;
 }
 
@@ -143,4 +143,11 @@ input,textarea, select {
 
 .img-gender {
   max-height: 25px;
+}
+
+
+.table-container-overflow {
+
+  max-height: 400px;
+  overflow-y: auto;
 }

@@ -4,22 +4,24 @@ import {Router} from "@angular/router";
 import { UserPopupComponent } from '../user-popup/user-popup.component';
 import { UserService } from 'src/app/core/services/user.service';
 import { Usuario } from 'src/app/core/models/user.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
   standalone: true,
-  imports: [ CommonModule, UserPopupComponent ]
+  imports: [ CommonModule, UserPopupComponent, FormsModule ]
 })
 export class UserListComponent implements OnInit {
   @Output() cerrarPopUpOk = new EventEmitter<void>();
   @Output() cerrarPopUpCancel = new EventEmitter<void>();
 
-  modoPopup: String = 'CLOSED';
-  estadoPopup: String = 'CREAR';
+  modoPopup: string = 'CLOSED';
+  estadoPopup: string = 'CREAR';
   usuarios: Usuario[] = [];
   selectedUserId: number = 0;
+  direccionPrincipal: string = '-';
 
   constructor(private router: Router, private userService: UserService) {
 
@@ -28,9 +30,16 @@ export class UserListComponent implements OnInit {
 
    async ngOnInit() {
 
-      this.usuarios = await this.userService.obtenerUsuarios();
-      console.log("Usuarios feched: ",this.usuarios);
-      this.selectedUserId = this.usuarios[0]?.id || 0;
+    const nickUsuario = localStorage.getItem('nickUsuario') || '';
+    const contrasena = localStorage.getItem('contrasena') || '';
+
+    this.usuarios = await this.userService.obtenerUsuarios(nickUsuario, contrasena);
+    console.log("Usuarios feched: ",this.usuarios);
+    if(this.usuarios && this.usuarios.length > 0) {
+
+      this.selectedUserId = this.usuarios[0].id;
+    }
+    await this.cargarDirecciones(nickUsuario, contrasena);
   }
 
   onCerrarPopUpOk() {
@@ -56,6 +65,59 @@ export class UserListComponent implements OnInit {
     
     this.estadoPopup = 'ACTUALIZAR';
     this.modoPopup = 'LAUNCH';
+  }
+
+  calcularEdad(fechaNacimiento: string): number {
+
+    const hoy = new Date();
+    const fechaNaci = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - fechaNaci.getFullYear();
+    return edad;
+
+  }
+
+  async cargarDirecciones(nickUsuario: string, contrasena: string) {
+
+    for (let usuario of this.usuarios) {
+
+      const direcciones = await this.userService.obtenerDireccionesPorUsuarioId(nickUsuario, contrasena, usuario.id);
+      usuario.direcciones = direcciones;
+      console.log(usuario.direcciones);
+    }
+  }
+
+  obtenerDireccionPrincipal(usuario: Usuario): string {
+    
+    if (!usuario || !usuario.direcciones) {
+      
+      return '-';
+    }
+    const dirPrincipal = usuario.direcciones.find(d => d.direccionPrincipal === true);
+    return dirPrincipal ? dirPrincipal.nombreCalle + ', ' + dirPrincipal.numeroCalle: '-';
+  } 
+
+  calcularExtraAdress(usuario: Usuario): number {
+
+    if (!usuario || !usuario.direcciones) {
+
+      return 0;
+    } else {
+
+      let extraAdress = 0;
+      for (let direccion of usuario.direcciones) {
+
+        if(!direccion.direccionPrincipal) {
+
+          extraAdress += 1;
+        }
+      }
+      return extraAdress;
+    }
+  }
+
+  logOut() {
+
+    this.router.navigate(['/login']);
   }
 
   // @TODO: Implementar propiedades, atributos, métodos... necesarios para el funcionamiento del listado de usuarios

@@ -4,12 +4,11 @@
                 (cerrarPopUpCancel)="onCerrarPopUpCancel()"
 />
 
+<header class = "header-container">
+    <button class = "logout-button" (click)="logOut()">Log out</button>
+</header>
+
 <div class="user-list-container">
-    <h2>User List</h2>
-    <!-- @TODO: Implement user list display here -->
-    <!-- <div>
-        <button (click)="launchPopup()">Popup</button>
-    </div> -->
 
     <div class = "container-button">
 
@@ -18,19 +17,23 @@
         <button class = "button main-button-icon" (click)="launchPopup()"><img src = "assets/images/DeleteIcon.JPG" alt = "Borrar" class = "img-icon"></button>
 
     </div>
-    <div clas = "table-container-overflow">
+    <div class = "table-container-overflow">
         <table class = "user-table">
 
             <thead>
 
                 <tr>
 
-                    <th>SELECT</th>
-                    <th>Genero</th>
-                    <th>Nombre</th>
-                    <th>Nick usuario</th>
-                    <th>Nombre compelto</th>
-                    <th>Fecha de creación</th>
+                    <th>SELECTED</th>
+                    <th>Gender</th>
+                    <th>username</th>
+                    <th>Full Name</th>
+                    <th>Creation</th>
+                    <th>Age</th>
+                    <th>Freakfast</th>
+                    <th>Job Position</th>
+                    <th>Main Address</th>
+                    <th>Extra Addresses</th>
                 </tr>
             </thead>
 
@@ -44,10 +47,16 @@
                     <td><img src="'assets/images/'+usuario.genero?.nombre+'.JPG'" alt = "{{ usuario.genero?.nombre }}"></td> -->
                     <td *ngIf="usuario.genero?.id === 1"><img src="assets/images/Male.JPG" alt = "{{ usuario.genero?.nombre }}" class = "img-gender"></td>
                     <td *ngIf="usuario.genero?.id === 2"><img src="assets/images/Female.JPG" alt = "{{ usuario.genero?.nombre }}" class="img-gender"></td>
-                    <td>{{ usuario.nombre}}</td>
                     <td>{{ usuario.nickUsuario }}</td>
                     <td>{{ usuario.primerApellido}} {{ usuario.segundoApellido}} , {{ usuario.nombre}}</td>
                     <td>{{ usuario.fechaHoraCreacion | date: 'yyyy-MM-dd HH:mm' }}</td>
+                    <td>{{ calcularEdad(usuario.fechaNacimiento)}}</td>
+                    <td>{{'1997-02-02T' + usuario.horaDesayuno | date: 'HH:mm'}}</td>
+                    <td>{{ usuario.puestoTrabajo.nombre }}</td>
+                    <td [title]="obtenerDireccionPrincipal(usuario)">
+                        <span class="text-elipsis"> {{ obtenerDireccionPrincipal(usuario) }} </span>
+                    </td>
+                    <td>{{ calcularExtraAdress(usuario) }}</td>
                 </tr>
             </tbody>
         </table>

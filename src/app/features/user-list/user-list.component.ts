@@ -42,16 +42,25 @@ export class UserListComponent implements OnInit {
     await this.cargarDirecciones(nickUsuario, contrasena);
   }
 
-  onCerrarPopUpOk() {
+  async onCerrarPopUpOk() {
     this.modoPopup = 'CLOSED';
+    const nickUsuario = localStorage.getItem('nickUsuario') || '';
+    const contrasena = localStorage.getItem('contrasena') || '';
+    this.usuarios = await this.userService.obtenerUsuarios(nickUsuario,contrasena);
+    if(this.usuarios && this.usuarios.length > 0) {
+
+      this.selectedUserId = this.usuarios[0].id;
+    }
+    await this.cargarDirecciones(nickUsuario, contrasena);
   }
 
   onCerrarPopUpCancel() {
     this.modoPopup = 'CLOSED';
   }
   
-  launchPopup() {
+  launchPopupBorrar() {
     
+    this.estadoPopup = 'BORRAR';
     this.modoPopup = 'LAUNCH';
   }
 

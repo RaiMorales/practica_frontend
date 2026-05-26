@@ -15,6 +15,4 @@ import { LoginService } from './core/services/login.service';
   standalone: true,
 
 })
-export class AppComponent {
-
-}
+export class AppComponent {}

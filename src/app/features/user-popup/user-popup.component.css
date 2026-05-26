@@ -1,3 +1,4 @@
+/*
 .dialog-overlay {
     position: fixed;
     top: 0;
@@ -57,7 +58,7 @@ td {
 tr:nth-child(even) {background-color: #f7cecc;}
 
 .container-button {
-    display: flex; /* alinear horizontalmente */
+    display: flex; 
     gap: 10px;
     margin-bottom: .8rem;
 }
@@ -135,4 +136,292 @@ input,textarea, select {
     border-radius: 4px;
     border: 1px solid #dddddd;
     background-color: #fff;
+} */
+
+/* ==========================================
+   1. ESTILOS BASE Y CONTENEDOR POPUP
+   ========================================== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+}
+
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Ajustado para albergar todo el contenido de la imagen de forma elegante */
+.dialog-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 1.5rem 2rem;
+    z-index: 1000;
+    border-radius: 8px;
+    width: 650px; /* Ancho ideal para que quepan las 3 columnas cómodamente */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+h2 {
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 1rem;
+    color: #333;
+    margin: 1rem 0;
+}
+
+.section-divider {
+    border: 0;
+    border-top: 1px solid #000; /* Línea negra separadora de la captura */
+    margin: 1.5rem 0 0.5rem 0;
+}
+
+/* ==========================================
+   2. CUADRÍCULA DEL FORMULARIO (GRID)
+   ========================================== */
+/* Forzamos a que los elementos se distribuyan en 3 columnas iguales */
+.user-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px 20px; /* Separación entre filas y columnas */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    color: #999; /* Texto gris claro de los labels */
+    margin-bottom: 4px;
+}
+
+/* Inputs y Selects estilizados como la captura */
+input, textarea, select {
+    width: 100%;
+    font: inherit;
+    padding: 0.4rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-sizing: border-box;
+    color: #333;
+    height: 38px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #3c8bcb;
+}
+
+/* El input deshabilitado (Creation Date) se ve gris claro */
+input:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Hacemos que el campo Breakfast ocupe solo su espacio sin descolocar el resto */
+.breakfast-group {
+    grid-column: 1; /* Forzado a iniciar en la primera columna */
+}
+
+/* ==========================================
+   3. SECCIÓN DE DIRECCIONES Y TABLA
+   ========================================== */
+.addresses-section {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra de botones "Create", "Update", "Delete" */
+.address-actions-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+/* Contenedor con scroll vertical para la tabla si tiene muchas direcciones */
+.popup-table-container {
+    max-height: 180px;
+    overflow-y: auto;
+    border: 1px solid #ad6f72;
+}
+
+.addresses-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.addresses-table th, .addresses-table td {
+    border: 1px solid #ad6f72;
+    padding: 0.5rem;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+.addresses-table th {
+    background-color: #e51400; /* Rojo corporativo de tu cabecera */
+    color: #fff;
+    font-weight: 600;
+}
+
+.addresses-table td {
+    color: #000;
+    background-color: #fff;
+}
+
+/* Filas alternas rosadas de tu diseño */
+.addresses-table tbody tr:nth-child(even) {
+    background-color: #f7cecc;
+}
+
+/* Ajustes de anchos para las columnas de la tabla */
+.addresses-table th:nth-child(1), .addresses-table th:nth-child(2) { width: 45px; }
+.addresses-table th:nth-child(4) { width: 90px; }
+
+/* Inputs tipo radio dentro de la tabla */
+.addresses-table input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+/* ==========================================
+   4. BOTONES (ESTILOS GENERALES Y ACCIONES)
+   ========================================== */
+.btn {
+    padding: 0.4rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+}
+
+/* Botones azules de la captura (Create, Update) */
+.btn-blue {
+    background-color: #3ca2da;
+    color: white;
+}
+
+.btn-blue:hover { background-color: #2b8ec5; }
+
+/* Botón de la papelera */
+.btn-icon {
+    background-color: #3ca2da;
+    padding: 0.4rem;
+    width: 38px;
+}
+
+.img-icon {
+    height: 22px;
+    width: auto;
+    filter: brightness(0) invert(1); /* Pone el icono negro en blanco si es necesario */
+}
+
+/* Footer: Contenedor de Save y Cancel abajo a la derecha */
+.popup-footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 1.5rem;
+}
+
+.btn-save, .btn-delete {
+    background-color: #3ca2da;
+    color: white;
+    min-width: 100px;
+}
+
+.btn-save, .btn-delete:hover { background-color: #2b8ec5; }
+
+.btn-cancel {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    min-width: 100px;
+}
+
+.btn-cancel:hover { background-color: #f5f5f5; }
+
+/* Clase de utilidad por si la necesitas */
+.errorClass {
+    color: red;
+    margin-top: 1em;
+}
+
+.container-button {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-bottom: .8rem;
+}
+
+.main-button, .main-button-icon {
+  width: auto;
+  height: 40px;
+  padding: .4rem .6rem;
+  border: none;
+  background-color: #3c8bcb;
+  cursor: pointer;
+  border-radius: .2rem;
+  color: #fff;
+}
+
+.main-button:hover {
+  background-color: #0056b3;
+}
+.main-button:active {
+  background-color: #003166;
+}
+
+.img-icon {
+  height: 100%;
+  width: auto;
+}
+
+.table-input {
+  width: 100%;
+  border: 1px solid transparent; /* Invisible por defecto */
+  background: transparent;
+  padding: .2rem .4rem;
+  font-family: inherit;
+  font-size: inherit;
+  box-sizing: border-box;
+}
+
+/* Cuando el usuario hace clic para escribir, se muestra un borde sutil */
+.table-input:focus {
+  border: 1px solid #3c8bcb;
+  background-color: #fff;
+  outline: none;
+  border-radius: .2rem;
+}
+
+.num-input {
+  max-width: 70px; /* Acortamos el tamaño para la columna de los números */
 }

@@ -14,7 +14,7 @@
 
         <button class = "button main-button" (click)="launchPopupCrear()">Crear</button>
         <button class = "button main-button" (click)="launchPopupActualizar()">Editar</button>
-        <button class = "button main-button-icon" (click)="launchPopup()"><img src = "assets/images/DeleteIcon.JPG" alt = "Borrar" class = "img-icon"></button>
+        <button class = "button main-button" (click)="launchPopupBorrar()"><img src = "assets/images/DeleteIcon.JPG" alt = "Borrar" class = "img-icon"></button>
 
     </div>
     <div class = "table-container-overflow">
@@ -39,7 +39,7 @@
 
             <tbody>
 
-                <tr *ngFor="let usuario of usuarios; let i = index">
+                <tr *ngFor="let usuario of usuarios">
 
                     <!-- NO ME ESTÁ COGIENDO POR DEFECTO EL PRIMERO NO SE POR QUÉ!!!!!!-->
                     <td><input type = "radio" name = "selectedUser" [value] = "usuario.id" [(ngModel)] = "selectedUserId" ></td>

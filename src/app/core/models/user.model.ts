@@ -14,7 +14,7 @@ export interface Usuario {
   fechaNacimiento: Date;
   horaDesayuno: string;
   puestoTrabajo: PuestoDeTrabajo;
-  admin: boolean;
+  esAdmin: boolean;
   direcciones: Direccion[];
 }
 
@@ -36,6 +36,6 @@ export const usuarioInicial: Usuario = {
     id: null,
     nombre: null
   },
-  admin: false,
+  esAdmin: false,
   direcciones: null
 };

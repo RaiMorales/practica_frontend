@@ -1,20 +1,253 @@
 <!--<div class="dialog-overlay" (click)="onCancel()"></div>-->
-<div class="dialog-overlay"></div>
-<div class="dialog-box">
-    <div class="dialog-title">
-        <h2>Pop Up</h2>
+<div class="dialog-overlay">
+    <div class="dialog-box">
+
+        <div *ngIf="estadoPopup === 'CREAR'">
+
+            <h2>Create user</h2>
+            <div class = "user-form-grid">
+                <div class = "form-group">
+
+                    <label for = "username">Username<span style="color: red;">*</span></label>
+                    <input type = "text" id = "nickUsuario" name = "nickUsuario" [(ngModel)] = "usuarioNuevo.nickUsuario">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "password">Password<span style="color: red;">*</span></label>
+                    <input type = "text" id = "contrasena" name = "contrasena" [(ngModel)] = "usuarioNuevo.contrasena">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "creationDate">Creation date</label>
+                    <input type = "text" id = "fechaHoraCreacion" name = "fechaHoraCreacion" [value] = "usuarioNuevo.fechaHoraCreacion | date: 'yyyy-MM-dd HH:mm'" disabled>
+                </div>
+                <div class = "form-group">
+
+                    <label for = "firstName">First name<span style="color: red;">*</span></label>
+                    <input type = "text" id = "nombre" name = "nombre" [(ngModel)] = "usuarioNuevo.nombre">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "firstSurname">First surname<span style="color: red;">*</span></label>
+                    <input type = "text" id = "primerApellido" name = "primerApellido" [(ngModel)] = "usuarioNuevo.primerApellido">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "secondSurname">Second surname</label>
+                    <input type = "text" id = "segundoApellido" name = "segundoApellido" [(ngModel)] = "usuarioNuevo.segundoApellido">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "birthdate">BirthDate<span style="color: red;">*</span></label>
+                    <input type = "date" id = "fechaNacimiento" name = "fechaNacimiento" [(ngModel)] = "usuarioNuevo.fechaNacimiento">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "gender">Gender<span style="color: red;">*</span></label>
+                    <select id = "genero" name = "genero" [(ngModel)] = "usuarioNuevo.genero.id">
+                        <option *ngFor = "let genero of generos" [value] = "genero.id"> {{ genero.nombre }} </option>
+                    </select>
+                </div>
+                <div class = "form-group">
+
+                    <label for = "jobPosition">Job position<span style="color: red;">*</span></label>
+                    <select id = "puestoTrabajo" name = "puestoTrabajo" [(ngModel)] = "usuarioNuevo.puestoTrabajo.id">
+                        <option *ngFor = "let puesto of puestos" [value] = "puesto.id"> {{ puesto.nombre }} </option>
+                    </select>
+                </div>
+                <div class = "form-group breakfast-group">
+
+                    <label for = "breakfastTime">Breakfast time</label>
+                    <input type = "time" id = "horaDesayuno" name = "horaDesayuno" [(ngModel)] = "usuarioNuevo.horaDesayuno">
+                </div>
+            </div>
+            <hr class = "section-divider">
+            <div class = "addresses-section">
+
+                <h3>Addresses</h3>
+                <div class = "container-button">
+
+                    <button class = "button main-button" (click) = "crearDireccion()">Crear</button>
+                    <button class = "button main-button" (click) = "editarDireccion()">Editar</button>
+                    <button class = "button main-button" (click) = "borrarDireccion()"><img src = "assets/images/DeleteIcon.JPG" alt = "Borrar" class = "img-icon"></button>
+
+                </div>
+                <div class = "popup-table-container">
+
+                    <table class = "addresses-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th></th>
+                                <th>Main</th>
+                                <th>Street Name</th>
+                                <th>Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor= "let direccion of usuarioActivo.direcciones; let i = index">
+
+                                <td>
+
+                                    <input type = "radio" name = "selectedDir" [value] = "direccion.id" [(ngModel)] = "selectedDirId" (change) = "idFilaEditable = 0">
+                                </td>
+                                <td>
+
+                                    <input type = "radio" name = "dirPrincipal" [value] = "direccion.id" [(ngModel)] = "selectedDirPrincipalId">
+                                </td>
+                                <td> <input *ngIf = "idFilaEditable === direccion.id"type = "text" class = "tableInput" name = "calle{{i}}" [(ngModel)] = "direccion.nombreCalle" placeholder = "Escribe el nombre de la calle..."> 
+                                     <span *ngIf = "idFilaEditable !== direccion.id"> {{ direccion.nombreCalle || '(calle vacía)' }}</span>
+                                </td>
+                                <td> <input *ngIf = "idFilaEditable === direccion.id"type = "number" class = "tableInput numInput" name = "numero{{i}}" [(ngModel)] = "direccion.numeroCalle" > 
+                                     <span *ngIf = "idFilaEditable !== direccion.id"> {{ direccion.numeroCalle || '-' }} </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div *ngIf="mensajeDeError" class = "errorClass">
+
+                {{ mensajeDeError }}
+            </div>
+
+            <div class = "popup-footer-actions">
+
+                <button class = "btn btn-save" (click)="onSave()">Save</button>
+                <button class = "btn btn-cancel" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+
+        <div *ngIf="estadoPopup === 'ACTUALIZAR'">
+
+            <h2>Update user</h2>
+            <div class = "user-form-grid">
+                <div class = "form-group">
+
+                    <label for = "username">Username<span style="color: red;">*</span></label>
+                    <input type = "text" id = "nickUsuarioEditable" name = "nickUsuario" [(ngModel)] = "usuarioEditable.nickUsuario">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "password">Password<span style="color: red;">*</span></label>
+                    <input type = "text" id = "contrasenaEditable" name = "contrasena" [(ngModel)] = "usuarioEditable.contrasena">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "creationDate">Creation date</label>
+                    <input type = "text" id = "fechaHoraCreacionEditable" name = "fechaHoraCreacion" [value] = "usuarioEditable.fechaHoraCreacion | date: 'yyyy-MM-dd HH:mm'" disabled>
+                </div>
+                <div class = "form-group">
+
+                    <label for = "firstName">First name<span style="color: red;">*</span></label>
+                    <input type = "text" id = "nombreEditable" name = "nombre" [(ngModel)] = "usuarioEditable.nombre">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "firstSurname">First surname<span style="color: red;">*</span></label>
+                    <input type = "text" id = "primerApellidoEditable" name = "primerApellido" [(ngModel)] = "usuarioEditable.primerApellido">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "secondSurname">Second surname</label>
+                    <input type = "text" id = "segundoApellidoEditable" name = "segundoApellido" [(ngModel)] = "usuarioEditable.segundoApellido">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "birthdate">BirthDate<span style="color: red;">*</span></label>
+                    <input type = "date" id = "fechaNacimientoEditable" name = "fechaNacimiento" [(ngModel)] = "usuarioEditable.fechaNacimiento">
+                </div>
+                <div class = "form-group">
+
+                    <label for = "gender">Gender<span style="color: red;">*</span></label>
+                    <select id = "generoEditable" name = "genero" [(ngModel)] = "usuarioEditable.genero.id">
+                        <option *ngFor = "let genero of generos" [value] = "genero.id"> {{ genero.nombre }} </option>
+                    </select>
+                </div>
+                <div class = "form-group">
+
+                    <label for = "jobPosition">Job position<span style="color: red;">*</span></label>
+                    <select id = "puestoTrabajoEditable" name = "puestoTrabajo" [(ngModel)] = "usuarioEditable.puestoTrabajo.id">
+                        <option *ngFor = "let puesto of puestos" [value] = "puesto.id"> {{ puesto.nombre }} </option>
+                    </select>
+                </div>
+                <div class = "form-group breakfast-group">
+
+                    <label for = "breakfastTime">Breakfast time</label>
+                    <input type = "time" id = "horaDesayunoEditable" name = "horaDesayuno" [(ngModel)] = "usuarioEditable.horaDesayuno">
+                </div>
+            </div>
+            <hr class = "section-divider">
+            <div class = "addresses-section">
+
+                <h3>Addresses</h3>
+                <div class = "container-button">
+
+                    <button class = "button main-button" (click) = "crearDireccion()" >Crear</button>
+                    <button class = "button main-button" (click) = "editarDireccion()" >Editar</button>
+                    <button class = "button main-button" (click) = "borrarDireccion()" ><img src = "/assets/images/DeleteIcon.JPG" alt = "Borrar" class = "img-icon"></button>
+
+                </div>
+                <div class = "popup-table-container">
+
+                    <table class = "addresses-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th></th>
+                                <th>Main</th>
+                                <th>Street Name</th>
+                                <th>Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor= "let direccion of usuarioActivo.direcciones; let i = index">
+
+                                <td>
+
+                                    <input type = "radio" name = "selectedDir" [value] = "direccion.id" [(ngModel)] = "selectedDirId" (change) = "idFilaEditable = 0">
+                                </td>
+                                <td>
+
+                                    <input type = "radio" name = "dirPrincipal" [value] = "direccion.id" [(ngModel)] = "selectedDirPrincipalId">
+                                </td>
+                                <td> <input *ngIf = "idFilaEditable === direccion.id"type = "text" class = "tableInput" name = "calle{{i}}" [(ngModel)] = "direccion.nombreCalle" placeholder = "Escribe el nombre de la calle..."> 
+                                     <span *ngIf = "idFilaEditable !== direccion.id"> {{ direccion.nombreCalle || '(calle vacía)' }}</span>
+                                </td>
+                                <td> <input *ngIf = "idFilaEditable === direccion.id"type = "number" class = "tableInput numInput" name = "numero{{i}}" [(ngModel)] = "direccion.numeroCalle" > 
+                                     <span *ngIf = "idFilaEditable !== direccion.id"> {{ direccion.numeroCalle || '-' }} </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div *ngIf="mensajeDeError" class = "errorClass">
+                {{ mensajeDeError }}
+            </div>
+
+            <div class = "popup-footer-actions">
+
+                <button class = "btn btn-save" (click)="onSave()">Save</button>
+                <button class = "btn btn-cancel" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+        <div *ngIf="estadoPopup === 'BORRAR'">
+
+            <h2> ¿Estás seguro de que deseas borrar el usuario seleccionado?</h2>
+            <div class = "popup-footer-actions">
+
+                <button class = "btn btn-delete" (click)="onDelete()">Borrar</button>
+                <button class = "btn btn-cancel" (click)="onCancel()">Cancelar</button>
+            </div>
+        </div>
     </div>
-
-    <div *ngIf="estadoPopup === 'CREAR'">
-
-        <p>Contenido del pup up para crear un nuevo usuario</p>
-    </div>
-
-    <div *ngIf="estadoPopup === 'ACTUALIZAR'">
-
-        <p>Contenido del pup up para actualizar un nuevo usuario existente</p>
-    </div>
-    <button (click)="onSave()">Aceptar</button>
-    <button (click)="onCancel()">Cancelar</button>
-    <!-- @TODO: Implementar el contenido del pop up, así como los botones de acción (ej. Cancelar, Aceptar) -->
 </div>

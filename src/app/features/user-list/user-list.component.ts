@@ -128,7 +128,4 @@ export class UserListComponent implements OnInit {
 
     this.router.navigate(['/login']);
   }
-
-  // @TODO: Implementar propiedades, atributos, métodos... necesarios para el funcionamiento del listado de usuarios
-
 }

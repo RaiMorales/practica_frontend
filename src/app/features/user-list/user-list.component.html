@@ -41,10 +41,7 @@
 
                 <tr *ngFor="let usuario of usuarios">
 
-                    <!-- NO ME ESTÁ COGIENDO POR DEFECTO EL PRIMERO NO SE POR QUÉ!!!!!!-->
                     <td><input type = "radio" name = "selectedUser" [value] = "usuario.id" [(ngModel)] = "selectedUserId" ></td>
-                    <!-- ME GUSTARÍA ASÍ PERO NO FUFA
-                    <td><img src="'assets/images/'+usuario.genero?.nombre+'.JPG'" alt = "{{ usuario.genero?.nombre }}"></td> -->
                     <td *ngIf="usuario.genero?.id === 1"><img src="assets/images/Male.JPG" alt = "{{ usuario.genero?.nombre }}" class = "img-gender"></td>
                     <td *ngIf="usuario.genero?.id === 2"><img src="assets/images/Female.JPG" alt = "{{ usuario.genero?.nombre }}" class="img-gender"></td>
                     <td>{{ usuario.nickUsuario }}</td>

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import { CommonModule, Time } from "@angular/common";
+import { CommonModule} from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { UserService } from 'src/app/core/services/user.service';
 import { Genero } from 'src/app/core/models/genero.model';
@@ -34,9 +34,8 @@ export class UserPopupComponent implements OnInit {
     usuarioNuevo: Usuario = {} as Usuario;
     usuarioEditable: Usuario = {} as Usuario;
     
-    // ─── NUEVAS VARIABLES CONTROLADORAS ───
-    usuarioActivo: Usuario = {} as Usuario; // Apuntará a usuarioNuevo o usuarioEditable
-    idFilaEditable: number = 0;            // Guarda el ID de la fila de la tabla que se está editando
+    usuarioActivo: Usuario = {} as Usuario; 
+    idFilaEditable: number = 0;            
     mensajeDeError: string = '';
 
     constructor(private userService: UserService) {}
@@ -89,7 +88,6 @@ export class UserPopupComponent implements OnInit {
             usuario: this.usuarioActivo,
             direccionPrincipal: false
         });
-        // Activamos automáticamente la edición para la nueva fila creada
         this.selectedDirId = idTemporal;
         this.idFilaEditable = idTemporal;
     }
@@ -101,7 +99,6 @@ export class UserPopupComponent implements OnInit {
             alert("Por favor, seleccione una fila de la tabla para editarla.");
             return;
         }
-        // Activamos los inputs de texto solo para la fila seleccionada
         this.idFilaEditable = this.selectedDirId;
     }
 
